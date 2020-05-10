@@ -17,6 +17,8 @@ export class ProductResolver {
 
     @Mutation(() => Product)
     async createProduct(@Arg("data") data: CreateProductInput) {
+        const existingProduct = await Product.findOne({ where: data })
+        if (existingProduct) throw new UserInputError("Product already exists!")
         const ProductInstance = Product.create(data)
         await ProductInstance.save()
         return ProductInstance

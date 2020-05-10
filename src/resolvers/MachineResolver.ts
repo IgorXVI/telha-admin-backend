@@ -21,7 +21,7 @@ export class MachineResolver {
         if (existingMachine) throw new UserInputError("Machine already exists!")
         const MachineInstance = Machine.create(data)
         await MachineInstance.save()
-        return Machine
+        return MachineInstance
     }
 
     @Mutation(() => Boolean)

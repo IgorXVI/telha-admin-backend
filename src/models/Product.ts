@@ -1,11 +1,13 @@
-import { Entity, BaseEntity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { Entity, BaseEntity, Column, PrimaryColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm"
 import { ObjectType, Field, ID, Int } from "type-graphql"
+
+import { Machine } from "./Machine"
 
 @Entity()
 @ObjectType()
 export class Product extends BaseEntity {
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id: string
 
     @Field()
@@ -32,7 +34,7 @@ export class Product extends BaseEntity {
     @Column()
     quantity: number
 
-    @Field(() => Int)
-    @Column()
-    number: number
+    @Field(() => Machine, { nullable: true })
+    @ManyToOne(() => Machine, MachineInstance => MachineInstance.Products)
+    Machine: Machine
 }
