@@ -6,12 +6,12 @@ import { CreateMachineInput } from "../inputs/CreateMachineInput"
 @Resolver()
 export class MachineResolver {
     @Query(() => [Machine])
-    machines() {
+    Machines() {
         return Machine.find()
     }
 
     @Query(() => Machine)
-    machine(@Arg("id") id: string) {
+    Machine(@Arg("id") id: string) {
         return Machine.findOne({ where: { id } })
     }
 
@@ -19,16 +19,16 @@ export class MachineResolver {
     async createMachine(@Arg("data") data: CreateMachineInput) {
         const existingMachine = await Machine.findOne({ where: data })
         if (existingMachine) throw new UserInputError("Machine already exists!")
-        const machine = Machine.create(data)
-        await machine.save()
-        return machine
+        const MachineInstance = Machine.create(data)
+        await MachineInstance.save()
+        return Machine
     }
 
     @Mutation(() => Boolean)
     async deleteMachine(@Arg("id") id: string) {
-        const machine = await Machine.findOne({ where: { id } })
-        if (!machine) throw new UserInputError("Machine not found!")
-        await machine.remove()
+        const MachineInstance = await Machine.findOne({ where: { id } })
+        if (!MachineInstance) throw new UserInputError("Machine not found!")
+        await MachineInstance.remove()
         return true
     }
 }

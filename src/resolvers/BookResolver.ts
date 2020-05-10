@@ -6,36 +6,36 @@ import { UpdateBookInput } from "../inputs/UpdateBookInput"
 @Resolver()
 export class BookResolver {
     @Query(() => [Book])
-    books() {
+    Books() {
         return Book.find()
     }
 
     @Query(() => Book)
-    book(@Arg("id") id: string) {
+    Book(@Arg("id") id: string) {
         return Book.findOne({ where: { id } })
     }
 
     @Mutation(() => Book)
     async createBook(@Arg("data") data: CreateBookInput) {
-        const book = Book.create(data)
-        await book.save()
-        return book
+        const BookInstance = Book.create(data)
+        await BookInstance.save()
+        return BookInstance
     }
 
     @Mutation(() => Book)
     async updateBook(@Arg("id") id: string, @Arg("data") data: UpdateBookInput) {
-        const book = await Book.findOne({ where: { id } })
-        if (!book) throw new UserInputError("Book not found!")
-        Object.assign(book, data)
-        await book.save()
-        return book
+        const BookInstance = await Book.findOne({ where: { id } })
+        if (!BookInstance) throw new UserInputError("Book not found!")
+        Object.assign(Book, data)
+        await BookInstance.save()
+        return BookInstance
     }
 
     @Mutation(() => Boolean)
     async deleteBook(@Arg("id") id: string) {
-        const book = await Book.findOne({ where: { id } })
-        if (!book) throw new UserInputError("Book not found!")
-        await book.remove()
+        const BookInstance = await Book.findOne({ where: { id } })
+        if (!BookInstance) throw new UserInputError("Book not found!")
+        await BookInstance.remove()
         return true
     }
 }

@@ -5,6 +5,7 @@ import { buildSchema } from "type-graphql"
 
 import { BookResolver } from "./resolvers/BookResolver"
 import { MachineResolver } from "./resolvers/MachineResolver"
+import { ProductResolver } from "./resolvers/ProductResolver"
 
 (async () => {
   await createConnection()
@@ -12,7 +13,8 @@ import { MachineResolver } from "./resolvers/MachineResolver"
     validate: false,
     resolvers: [
       BookResolver,
-      MachineResolver
+      MachineResolver,
+      ProductResolver
     ]
   })
   const server = new ApolloServer({ schema })

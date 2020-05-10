@@ -8,15 +8,15 @@ export class Book extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: string
 
-    @Field(() => String)
+    @Field()
     @Column()
     title: string
 
-    @Field(() => String)
+    @Field()
     @Column()
     author: string
 
-    @Field(() => Boolean)
+    @Field()
     @Column({ default: false })
     isPublished: boolean
 }

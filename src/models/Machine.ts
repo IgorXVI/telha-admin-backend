@@ -8,7 +8,11 @@ export class Machine extends BaseEntity {
     @PrimaryColumn()
     id: string
 
-    @Field(() => String)
+    @Field()
     @CreateDateColumn({ type: "datetime" })
     createdAt: Date
+
+    @Field()
+    @UpdateDateColumn({ type: "datetime" })
+    updatedAt: Date
 }
