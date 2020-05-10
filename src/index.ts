@@ -7,8 +7,11 @@ import { BookResolver } from "./resolvers/BookResolver"
 
 (async () => {
   await createConnection()
-  const schema = await buildSchema({ resolvers: [BookResolver] })
+  const schema = await buildSchema({
+    validate: false,
+    resolvers: [BookResolver]
+  })
   const server = new ApolloServer({ schema })
   await server.listen(4000)
-  console.log("Server has started!")
+  console.log("Server has started on port 4000!")
 })()
