@@ -1,8 +1,22 @@
 {
-    "type": "sqlite",
-    "database": "./db.sqlite3",
+    "database": "telha_admin",
+    "logging": true,
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "password": "password",
+    "synchronize": false,
     "entities": [
-        "./src/models/*.ts"
+        "build/src/models/**/*.js"
     ],
-    "synchronize": true
+    "migrations": [
+        "build/src/migrations/**/*.js"
+    ],
+    "subscribers": [
+        "build/src/subscribers/**/*.js"
+    ],
+    "cli": {
+        "migrationsDir": "src/migrations"
+    }
 }

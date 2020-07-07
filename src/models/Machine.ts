@@ -18,6 +18,6 @@ export class Machine extends BaseEntity {
     updatedAt: Date
 
     @Field(() => Product, { nullable: true })
-    @OneToMany(() => Product, ProductInstance => ProductInstance.Machine) // note: we will create author property in the Photo class below
+    @OneToMany(() => Product, ProductInstance => ProductInstance.Machine)
     Products: Product[]
 }

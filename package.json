@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -w src --ext ts --exec ts-node src/index.ts"
+    "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate --name",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "migration:revert": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+    "compile": "tsc --watch",
+    "dev": "nodemon build/src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +23,7 @@
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
+    "nodemon": "^2.0.4",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   }
