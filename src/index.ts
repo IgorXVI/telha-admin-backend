@@ -3,16 +3,14 @@ import { createConnection } from "typeorm"
 import { ApolloServer } from "apollo-server"
 import { buildSchema } from "type-graphql"
 
-import { BookResolver } from "./resolvers/BookResolver"
 import { MachineResolver } from "./resolvers/MachineResolver"
 import { ProductResolver } from "./resolvers/ProductResolver"
 
 (async () => {
   await createConnection()
   const schema = await buildSchema({
-    validate: false,
+    validate: true,
     resolvers: [
-      BookResolver,
       MachineResolver,
       ProductResolver
     ]

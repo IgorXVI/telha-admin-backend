@@ -6,17 +6,17 @@
     "port": 3306,
     "username": "root",
     "password": "password",
-    "synchronize": false,
+    "synchronize": true,
     "entities": [
-        "build/src/models/**/*.js"
+        "build/models/**/*.js"
     ],
     "migrations": [
-        "build/src/migrations/**/*.js"
+        "build/migrations/**/*.js"
     ],
     "subscribers": [
-        "build/src/subscribers/**/*.js"
+        "build/subscribers/**/*.js"
     ],
     "cli": {
-        "migrationsDir": "src/migrations"
+        "migrationsDir": "src/migrations/**/*.ts"
     }
 }
