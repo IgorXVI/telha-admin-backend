@@ -1,11 +1,14 @@
 import { Resolver, Mutation, Arg, Query, ClassType } from "type-graphql"
+import { In } from "typeorm"
 import { UserInputError } from "apollo-server"
 
 interface TypeORMModel extends ClassType {
     find: Function,
     findOne: Function,
     findAndCount: Function,
-    create: Function
+    create: Function,
+    delete: Function,
+    update: Function
 }
 
 export const makeCrudResolver = <
@@ -43,6 +46,18 @@ export const makeCrudResolver = <
             }
         }
 
+        @Query(() => FindManyOutput)
+        async [nameFun("findManyByIds")](
+            @Arg("ids", () => [String])
+            ids: [string]
+        ) {
+            return Model.find({
+                where: {
+                    id: In(ids)
+                }
+            })
+        }
+
         @Query(() => Model)
         [nameFun("findOne")](
             @Arg("id")
@@ -68,7 +83,7 @@ export const makeCrudResolver = <
         }
 
         @Mutation(() => Model)
-        async [nameFun("update")](
+        async [nameFun("updateOne")](
             @Arg("id")
             id: string,
             @Arg("data", () => UpdateInput)
@@ -78,11 +93,27 @@ export const makeCrudResolver = <
 
             if (!instance) throw new UserInputError(`${Model.name} not found!`)
 
-            Object.assign(Model, data)
+            Object.assign(instance, data)
 
             await instance.save()
 
             return instance
+        }
+
+        @Mutation(() => Boolean)
+        async [nameFun("updateMany")](
+            @Arg("ids", () => [String])
+            ids: [string],
+            @Arg("data", () => UpdateInput)
+            data: UpdateInput
+        ) {
+            await Model.update({
+                where: {
+                    id: In(ids)
+                }
+            }, data)
+
+            return true
         }
 
         @Mutation(() => Boolean)
@@ -95,6 +126,20 @@ export const makeCrudResolver = <
             if (!instance) throw new UserInputError(`${Model.name} not found!`)
 
             await instance.remove()
+
+            return true
+        }
+
+        @Mutation(() => Boolean)
+        async [nameFun("deleteMany")](
+            @Arg("ids", () => [String])
+            ids: [string]
+        ) {
+            await Model.delete({
+                where: {
+                    id: In(ids)
+                }
+            })
 
             return true
         }
