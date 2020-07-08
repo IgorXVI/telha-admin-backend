@@ -1,29 +1,23 @@
-import { Resolver, Mutation, Arg, Query, ClassType, Field, InputType, Int } from "type-graphql"
+import { Resolver, Mutation, Arg, Query, ClassType, Ctx } from "type-graphql"
 import { UserInputError } from "apollo-server"
-
-@InputType()
-class PaginationInput {
-    @Field(() => Int, { nullable: true })
-    skip?: number
-
-    @Field(() => Int, { nullable: true })
-    take?: number
-}
 
 interface TypeORMModel extends ClassType {
     find: Function,
     findOne: Function,
+    findAndCount: Function,
     create: Function
 }
 
 export const makeCrudResolver = <
     Model extends TypeORMModel,
     CreateInput extends ClassType,
-    UpdateInput extends ClassType
+    UpdateInput extends ClassType,
+    FindManyInput extends ClassType
 >(
     Model: Model,
     CreateInput: CreateInput,
-    UpdateInput: UpdateInput
+    UpdateInput: UpdateInput,
+    FindManyInput: FindManyInput
 ) => {
 
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
@@ -32,11 +26,20 @@ export const makeCrudResolver = <
     @Resolver({ isAbstract: true })
     class CrudResolver {
         @Query(() => [Model])
-        [nameFun("findMany")](
+        async [nameFun("findMany")](
+            @Ctx()
+            context: any,
             @Arg("options", { nullable: true })
-            options?: PaginationInput
+            options?: FindManyInput
         ) {
-            return Model.find(options)
+            const [
+                elements,
+                total
+            ] = await Model.findAndCount(options)
+
+            context.res.set('content-total', total)
+
+            return elements
         }
 
         @Query(() => Model)
