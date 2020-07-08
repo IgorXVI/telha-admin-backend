@@ -100,7 +100,7 @@ export const makeCrudResolver = <
             return instance
         }
 
-        @Mutation(() => Boolean)
+        @Mutation(() => [String])
         async [nameFun("updateMany")](
             @Arg("ids", () => [String])
             ids: [string],
@@ -113,10 +113,10 @@ export const makeCrudResolver = <
                 }
             }, data)
 
-            return true
+            return ids
         }
 
-        @Mutation(() => Boolean)
+        @Mutation(() => Model)
         async [nameFun("deleteOne")](
             @Arg("id")
             id: string
@@ -127,23 +127,21 @@ export const makeCrudResolver = <
 
             await instance.remove()
 
-            return true
+            return instance
         }
 
-        @Mutation(() => Boolean)
+        @Mutation(() => [String])
         async [nameFun("deleteMany")](
             @Arg("ids", () => [String])
             ids: [string]
         ) {
-            const result = await Model.delete({
+            await Model.delete({
                 where: {
                     id: In(ids)
                 }
             })
 
-            console.log(result)
-
-            return true
+            return ids
         }
 
     }
