@@ -1,7 +1,6 @@
-import { GraphQLError } from "graphql"
-import { ApolloError } from "apollo-server-express"
+import { ApolloError, UserInputError } from "apollo-server-express"
 
-export const formatError = (error: GraphQLError) => {
+export const formatError = (error: any) => {
     if (error instanceof ApolloError) {
         return error
     }
@@ -10,6 +9,9 @@ export const formatError = (error: GraphQLError) => {
     }
     else if (error.message === "Access denied! You don't have permission for this action!") {
         return new ApolloError(error.message, "UNAUTHORIZED")
+    }
+    else if (error.originalError.sqlMessage.startsWith("Cannot delete or update a parent row:")){
+        return new UserInputError(error.originalError.sqlMessage)
     }
     else {
         console.error(JSON.stringify(error, null, 2))

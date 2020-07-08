@@ -34,7 +34,8 @@ export class Product extends BaseEntity {
     @Column()
     quantity: number
 
-    @Field()
+    @Field({ nullable: true })
+    @Column()
     machineId: string
 
     @Field(() => Machine, { nullable: true })

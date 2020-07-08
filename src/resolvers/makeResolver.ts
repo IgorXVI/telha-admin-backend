@@ -46,7 +46,7 @@ export const makeCrudResolver = <
             }
         }
 
-        @Query(() => FindManyOutput)
+        @Query(() => [Model], { nullable: true })
         async [nameFun("findManyByIds")](
             @Arg("ids", () => [String])
             ids: [string]
@@ -58,7 +58,7 @@ export const makeCrudResolver = <
             })
         }
 
-        @Query(() => Model)
+        @Query(() => Model, { nullable: true })
         [nameFun("findOne")](
             @Arg("id")
             id: string

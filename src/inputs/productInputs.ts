@@ -6,9 +6,6 @@ import { BaseFilterInput, BaseSortInput, makeFindManyOptionsInput } from "../inp
 @InputType()
 export class CreateProductInput {
     @Field()
-    id: string
-
-    @Field()
     machineId: string
 
     @Field(() => Int)
