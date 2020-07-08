@@ -17,6 +17,6 @@
         "build/subscribers/**/*.js"
     ],
     "cli": {
-        "migrationsDir": "src/migrations/**/*.ts"
+        "migrationsDir": "src/migrations"
     }
 }

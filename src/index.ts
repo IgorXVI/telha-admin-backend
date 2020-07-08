@@ -11,7 +11,7 @@ import { formatError } from "./apollo/formatError"
 (async () => {
   await createConnection()
   const schema = await buildSchema({
-    validate: true,
+    validate: false,
     resolvers: [
       MachineResolver,
       ProductResolver
