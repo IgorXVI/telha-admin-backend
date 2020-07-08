@@ -135,11 +135,13 @@ export const makeCrudResolver = <
             @Arg("ids", () => [String])
             ids: [string]
         ) {
-            await Model.delete({
+            const result = await Model.delete({
                 where: {
                     id: In(ids)
                 }
             })
+
+            console.log(result)
 
             return true
         }

@@ -50,6 +50,9 @@ class SortProductInput extends BaseSortInput {
 
     @Field({ nullable: true })
     executionEnd?: SortEnum
+
+    @Field({ nullable: true })
+    machineId?: SortEnum
 }
 
 @InputType()
@@ -65,6 +68,9 @@ class FilterProductInput extends BaseFilterInput {
 
     @Field({ nullable: true })
     executionEnd?: string
+
+    @Field({ nullable: true })
+    machineId?: string
 }
 
 @InputType()

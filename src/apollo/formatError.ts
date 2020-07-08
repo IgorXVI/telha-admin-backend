@@ -1,17 +1,15 @@
-import { ApolloError, UserInputError } from "apollo-server-express"
+import { ApolloError } from "apollo-server-express"
+import { ValidationError } from "apollo-server-errors"
 
 export const formatError = (error: any) => {
     if (error instanceof ApolloError) {
         return error
     }
     else if (error.originalError instanceof ApolloError) {
-        return error
-    }
-    else if (error.message === "Access denied! You don't have permission for this action!") {
-        return new ApolloError(error.message, "UNAUTHORIZED")
+        return new ValidationError(error.message)
     }
     else if (error.originalError.sqlMessage.startsWith("Cannot delete or update a parent row:")){
-        return new UserInputError(error.originalError.sqlMessage)
+        return new ValidationError(error.originalError.sqlMessage)
     }
     else {
         console.error(JSON.stringify(error, null, 2))
