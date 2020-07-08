@@ -1,6 +1,7 @@
 import { Resolver } from "type-graphql"
 import { Machine } from "../models/Machine"
 import { CreateMachineInput, UpdateMachineInput, FindManyMachinesInput } from "../inputs/machineInputs"
+import { FindManyMachinesOutput } from "../outptus/machineOutputs"
 
 import { makeCrudResolver } from "./makeResolver"
 
@@ -9,5 +10,6 @@ export class MachineResolver extends makeCrudResolver(
     Machine,
     CreateMachineInput,
     UpdateMachineInput,
-    FindManyMachinesInput
+    FindManyMachinesInput,
+    FindManyMachinesOutput
 ) {  }

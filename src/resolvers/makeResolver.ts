@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Query, ClassType, Ctx } from "type-graphql"
+import { Resolver, Mutation, Arg, Query, ClassType } from "type-graphql"
 import { UserInputError } from "apollo-server"
 
 interface TypeORMModel extends ClassType {
@@ -12,12 +12,14 @@ export const makeCrudResolver = <
     Model extends TypeORMModel,
     CreateInput extends ClassType,
     UpdateInput extends ClassType,
-    FindManyInput extends ClassType
+    FindManyInput extends ClassType,
+    FindManyOutput extends ClassType
 >(
     Model: Model,
     CreateInput: CreateInput,
     UpdateInput: UpdateInput,
-    FindManyInput: FindManyInput
+    FindManyInput: FindManyInput,
+    FindManyOutput: FindManyOutput
 ) => {
 
     const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
@@ -25,11 +27,9 @@ export const makeCrudResolver = <
 
     @Resolver({ isAbstract: true })
     class CrudResolver {
-        @Query(() => [Model])
+        @Query(() => FindManyOutput)
         async [nameFun("findMany")](
-            @Ctx()
-            context: any,
-            @Arg("options", { nullable: true })
+            @Arg("options", () => FindManyInput, { nullable: true })
             options?: FindManyInput
         ) {
             const [
@@ -37,9 +37,10 @@ export const makeCrudResolver = <
                 total
             ] = await Model.findAndCount(options)
 
-            context.res.set('content-total', total)
-
-            return elements
+            return {
+                total,
+                elements
+            }
         }
 
         @Query(() => Model)
